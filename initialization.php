@@ -10,7 +10,7 @@ License: Help yourselves to the shelves
 */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 // Autoloaders
-require_once('dependencies/services_dependency/vendor/autoload.php'); // Composer classes - e.g. Firebase classes.
+require_once('dependencies/services_dependency/vendor/autoload.php'); // Symbolic link to "services_dependency" - Composer classes - e.g. Firebase classes.
 require_once('appClasses/autoloadAppClasses.php'); // App classes
 
 // Get the directory/folder of the current file. i.e. the plugins directory path (road map) & URL.
