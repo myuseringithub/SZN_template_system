@@ -1,0 +1,93 @@
+<link rel="import" href="./szn-appdashboard-styles.html">
+<dom-module id="szn-appdashboard"><template>
+  <style include="szn-appdashboard-styles"></style>
+
+  <iron-media-query query="min-width: 600px" query-matches="{{wideLayout}}"></iron-media-query>
+
+  <!-- Firebase APP -->
+  <firebase-app
+    api-key="{{app.firebase.apiKey}}"
+    auth-domain="{{app.firebase.authDomain}}"
+    database-url="{{app.firebase.databaseURL}}"
+  ></firebase-app>
+  <firebase-auth
+    id="auth"
+    user="{{user}}"
+    on-error="_authErrorHandler"
+  ></firebase-auth>
+
+    <!-- // Create a callback to handle the result of the authentication
+    function authHandler(error, authData) {
+      if (error) {
+        console.log("Login Failed!", error);
+      } else {
+        console.log("Authenticated successfully with payload:", authData);
+      }
+    }
+    // Authenticate users with a custom authentication token
+    ref.authWithCustomToken("<token>", authHandler); -->
+
+    <!-- app-location binds to the app's URL -->
+    <app-location route="{{currentRoute}}" use-hash-as-path></app-location>
+    <!-- this app-route manages the top-level routes -->
+    <app-route mode="hash"
+        route="{{currentRoute}}"
+        pattern="/:view"
+        data="{{routeParameters}}"
+        tail="{{subroute}}"></app-route>
+
+  <app-drawer-layout force-narrow id="appdrawerlayout">
+    <app-drawer id="drawer">
+
+      <app-toolbar></app-toolbar>
+
+      <!-- Nav on mobile: side nav menu -->
+      <paper-menu selected="{{routeParameters.view}}" attr-for-selected="name">
+        <template is="dom-repeat" items="{{items}}">
+          <paper-item name="{{item.route}}">{{item.name}}</paper-item>
+        </template>
+      </paper-menu>
+    </app-drawer>
+    <app-header-layout id="appheaderlayout">
+      <app-header condenses id="appheader" class="main-header" fixed
+          effects="waterfall fade-background"
+          effects-config='{"fade-background": {"startsAt": 0.8, "endsAt": 0.9}}'>
+
+        <app-toolbar>
+          <div class="navItem leftItem">
+            <paper-icon-button class="menu-button" icon="menu" drawer-toggle hidden$="{{wideLayout}}"></paper-icon-button>
+          </div>
+          <div class="spacer">
+            <div class="logo"></div>
+          </div>
+          <div class="navItem">
+            <!-- <paper-icon-button icon="more-vert"></paper-icon-button> -->
+          </div>
+
+        </app-toolbar>
+
+        <app-toolbar class="tabs-bar tall" hidden$="{{!wideLayout}}">
+          <h1 title>AppScript DASHBOARD</h1>
+          <!-- Nav on desktop: tabs -->
+          <paper-tabs selected="{{routeParameters.view}}" attr-for-selected="name" bottom-item>
+            <template is="dom-repeat" items="{{items}}">
+              <paper-tab name="{{item.route}}">{{item.name}}</paper-tab>
+            </template>
+          </paper-tabs>
+        </app-toolbar>
+
+      </app-header>
+
+      <div id="content" content>
+        <!-- iron-pages selects the view based on the active route -->
+        <iron-pages selected="{{routeParameters.view}}" attr-for-selected="name" style="width: 100%;">
+          <files-view name="files" route="{{subroute}}"></files-view>
+          <routes-view name="routes" route="{{subroute}}"></routes-view>
+          <documents-view name="documents" route="{{subroute}}"></documents-view>
+          <views-view name="views" route="{{subroute}}"></views-view>
+          <settings-view name="settings" route="{{subroute}}"></settings-view>
+        </iron-pages>
+      </div>
+    </app-header-layout>
+  </app-drawer-layout>
+</template><script src="./szn-appdashboard.js"></script></dom-module>

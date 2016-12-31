@@ -1,0 +1,158 @@
+<!-- shared-styles.html -->
+<dom-module id="files-view-styles"><template><style include="iron-flex iron-flex-alignment">
+paper-tab {
+  --paper-tab-ink: white;
+}
+
+paper-tabs {
+  margin: auto;
+  max-width: 640px; /* 1610px */
+  height: 59px;
+  --paper-tabs-selection-bar-color: #FF275D;
+}
+
+paper-tab {
+  /*--paper-tab-ink: #aaa;*/
+  text-transform: uppercase;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+
+body {
+  margin: 0;
+  font-family: 'Roboto', 'Noto', sans-serif;
+  background-color: #F1F1F1;
+}
+
+app-header-layout {
+  background-color: #F1F1F1;
+}
+
+app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 440px;
+  color: #fff;
+  background-image: url(//app-layout-assets.appspot.com/assets/bg3.jpg);
+  background-position: bottom center;
+  background-size: cover;
+
+  --app-header-background-front-layer: {
+    background: -webkit-linear-gradient(top, transparent 0%, transparent 50%, rgba(0,0,0,0.5) 100%);
+  };
+
+  --app-header-background-rear-layer: {
+    background-color: #303f9f;
+  };
+}
+
+paper-icon-button {
+  --paper-icon-button-ink-color: white;
+}
+
+app-toolbar.tall {
+  height: 376px;
+}
+
+sample-content {
+  padding-top: 440px;
+}
+
+[title] {
+  color: white;
+  font-weight: 300;
+  position: absolute;
+  bottom: 170px;
+  left: 110px;
+  font-size: 45px;
+  margin: 0;
+}
+
+[condensed-title] {
+  font-weight: lighter;
+  margin-left: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+[condensed-title] i {
+  font-weight: 100;
+  font-style: normal;
+}
+
+.navItem {
+  @apply(--layout-self-start);
+  margin-top: 13px;
+  width: 88px;
+}
+
+.spacer {
+  @apply(--layout);
+  @apply(--layout-flex-auto);
+  @apply(--layout-center-center);
+}
+
+#content {
+  @apply(--layout);
+  @apply(--layout-flex-auto);
+  @apply(--layout-center-center);
+  @apply(--layout-horizontal);
+  @apply(--layout-wrap);
+  padding-top: 15px;
+}
+
+.item {
+  -webkit-flex: 1 calc(20% - 20px);
+  flex: 1 calc(20% - 20px);
+  width: calc(20% - 20px);
+  min-width: 200px;
+  flex-grow: 0;
+  height: 250px;
+  min-height: 200px;
+  margin: 10px;
+  text-decoration: none;
+  background-color: white;
+
+  font-size: 18px;
+  text-align: center;
+  line-height: 40px;
+  overflow: hidden;
+
+}
+
+.item span {
+  white-space: nowrap;
+  display: block;
+}
+
+.section-title {
+  font-size: 35px;
+  line-height: 30px;
+  margin: 37px auto 25px auto;
+  font-weight: bold;
+  background-color: #666666;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: rgba(255,255,255,0.5) 0px 3px 3px;
+  text-align: center;
+  text-transform: uppercase;
+
+}
+szn-fileslist {
+  width: 100%;
+}
+
+@media (max-width: 639px) {
+  [title] {
+    left: 85px;
+  }
+}
+
+</style></template></dom-module>

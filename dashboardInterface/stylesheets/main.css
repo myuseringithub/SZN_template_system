@@ -1,0 +1,11 @@
+/* Hide all children elements of body. In addition to removing them with js. */
+body > *:not(main-document-element) {
+     display: none;
+}
+body {
+  background-color: #EDEDED !important;
+}
+html {
+  padding: 0 !important; /* reset wordpress admin bar padding */
+  background: none !important;
+}

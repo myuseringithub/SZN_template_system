@@ -1,0 +1,186 @@
+<dom-module id="szn-addfilecard"><template>
+  <style include="iron-flex iron-flex-alignment">
+    :host {
+      @apply(--layout);
+      @apply(--layout-flex-auto);
+      @apply(--layout-center-center);
+      @apply(--layout-horizontal);
+      @apply(--layout-wrap);
+      padding-top: 15px;
+
+    }
+    body {
+      font-family: Roboto, sans-serif;
+      color: #333;
+      max-width: 700px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    form {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    paper-button {
+      flex-grow: 1;
+    }
+    paper-input {
+      flex-grow: 1;
+    }
+
+    paper-checkbox {
+      display: inline-block;
+      margin: 5px 0;
+      transition: opacity 0.3s;
+    }
+
+    paper-checkbox[checked] {
+      opacity: 0.5;
+    }
+
+    #content {
+      @apply(--layout);
+      @apply(--layout-flex-auto);
+      @apply(--layout-center-center);
+      @apply(--layout-horizontal);
+      @apply(--layout-wrap);
+      padding-top: 15px;
+    }
+
+    :host {
+      -webkit-flex: 1 calc(20% - 20px);
+      flex: 1 calc(20% - 20px);
+      width: calc(20% - 20px);
+      min-width: 200px;
+      flex-grow: 0;
+      height: 250px;
+      min-height: 200px;
+      margin: 10px;
+      text-decoration: none;
+      background-color: white;
+
+      font-size: 18px;
+      text-align: center;
+      line-height: 40px;
+      overflow: auto;
+
+    }
+
+    :host span {
+      white-space: nowrap;
+      display: block;
+    }
+
+    .section-title {
+      font-size: 35px;
+      line-height: 30px;
+      margin: 37px auto 25px auto;
+      font-weight: bold;
+      background-color: #666666;
+      -webkit-background-clip: text;
+      -moz-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: rgba(255,255,255,0.5) 0px 3px 3px;
+      text-align: center;
+      text-transform: uppercase;
+
+    }
+
+    @media (max-width: 639px) {
+      [title] {
+        left: 85px;
+      }
+    }
+
+  </style>
+    <span style="display: block; width: 100%;" >{{filestype}}</span>
+    <paper-button on-tap="addFile">Add</paper-button>
+
+    <firebase-document
+      path="[[_getFilesStructureURL(filestype)]]"
+      data="{{datablueprint}}"
+    ></firebase-document>
+
+</template><script>
+(() => { 'use strict';
+const SZN = window.SZN || {};
+class PolymerElement {
+  get behaviors() { // http://www.ericfeminella.com/blog/2016/03/25/polymer-behaviors-in-es6/
+    return this._behaviors || (this._behaviors = [SZN.behaviors.App]);
+  }
+  set behaviors(value) { this._behaviors = value;}
+  beforeRegister() { // Element setup goes in beforeRegister instead of createdCallback.
+    this.is = 'szn-addfilecard';
+    this.properties = { // Define the properties object in beforeRegister.
+      files: {
+          type: Array,
+          notify: true
+      },
+      datablueprint: {
+          type: Object,
+          value: function() {
+            return {};
+          },
+          observer: '_addFormFields'
+      },
+      filestype: {
+          type: String,
+          notify: true
+      }
+    };
+  }
+  ready() {
+  }
+  attached() {
+    // var documentFragment = '<paper-input id="order" label="order" value="{{item.order}}" ></paper-input>';
+    // this.addInputField(Polymer.dom(this.root), 'order');
+    // this.addInputField(Polymer.dom(this.root), 'type');
+    // this.addInputField(Polymer.dom(this.root), 'name');
+    // this.addInputField(Polymer.dom(this.root), 'path');
+    // this.addInputField(Polymer.dom(this.root), 'source');
+    // this.addInputField(Polymer.dom(this.root), 'filePositionInPage');
+    this.fire('app-header-reset-layout'); // reset layout
+  }
+  _addFormFields() {  // use structure blueprint from firebase to add input field corresponding to the possible fields in the specific fiel type.
+    var datablueprint = this.datablueprint;
+    for (var key in datablueprint) {
+      if (datablueprint.hasOwnProperty(key)) {
+        this.addInputField(Polymer.dom(this.root), key);
+      }
+    }
+  }
+  addFile() {
+    // add file to object which is bind to firebase. The ID of the element will be used as the key and the inpute value will be the value.
+    var fileObject = {};
+    // var addFileContainerElement = Polymer.dom(this.root);
+    var inputElements = this.getElementsByTagName('paper-input');
+    for (var i = 0; i < inputElements.length; i++) {
+      var value = inputElements[i].value;
+      if (value) {
+        var id = inputElements[i].id;
+        fileObject[id] = value;
+        inputElements[i].value = null;
+      }
+    }
+    var ref = this.jointPaths([ this.app.firebase.basePath, 'files', this.filestype ]);
+    firebase.database().ref(ref).push(fileObject);
+  }
+  addInputField(container, keyField) {
+    var input = document.createElement('paper-input');
+    input.label = keyField;
+    input.id = keyField;
+    container.appendChild(input);
+  }
+  _getFilesStructureURL(filestype) {
+    return this.jointPaths([ this.app.firebase.basePath, 'settings/dataBlueprint/files', filestype ]);
+  }
+}
+HTMLImports.whenReady(()=>{
+  Polymer(PolymerElement); // Register the element using Polymer's constructor.
+});
+})();
+</script></dom-module>

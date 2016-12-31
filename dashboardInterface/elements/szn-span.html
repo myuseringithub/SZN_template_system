@@ -1,0 +1,61 @@
+<script>
+(() => { 'use strict';
+const SZN = window.SZN || {};
+class PolymerElement {
+  get behaviors() { // http://www.ericfeminella.com/blog/2016/03/25/polymer-behaviors-in-es6/
+    return this._behaviors || (this._behaviors = []);
+  }
+  set behaviors(value) { this._behaviors = value;}
+  beforeRegister() { // Element setup goes in beforeRegister instead of createdCallback. Allow to transform an element's prototype
+    this.is = 'szn-span';
+    this.extends = 'span';
+    this.hostAttributes = {
+      //If a custom element needs HTML attributes set on it at create-time.
+      'contenteditable': true
+    }
+    this.properties = { // Define the properties object in beforeRegister.
+      /**
+       * Use this property instead of `textContent` for two-way data binding.
+       */
+      bindValue: {
+        observer: '_bindValueChanged',
+        type: String
+      },
+    };
+    this.listeners = {
+      'input': '_onInput'
+    };
+  }
+  registered() {
+    // perform one-time initialization when an element is registered.
+  }
+  // factoryImpl(foo, bar) { // create custom instance imperatively with specific custom attributes.
+  //   this.foo = foo;
+  //   this.configureWithBar(bar);
+  // },
+  ready() {
+    this.bindValue = this.textContent;
+  }
+  attached() {
+    this.async(function() {
+      // access sibling or parent elements here. because There are no guarantees with regard to initialization timing between sibling elements.
+    });
+  }
+  _bindValueChanged() {
+    if (this.textContent !== this.bindValue) {
+      this.textContent = !(this.bindValue || this.bindValue === 0 || this.bindValue === false) ? '' : this.bindValue;
+    }
+    // manually notify because we don't want to notify until after setting value e.
+    this.fire('bind-value-changed', {value: this.bindValue});
+  }
+  _onInput() {
+    // Need to validate each of the characters pasted if they haven't
+    // been validated inside `_onKeypress` already.
+    this.bindValue = this.textContent;
+  }
+}
+HTMLImports.whenReady(()=>{ // define element in main document.
+  Polymer(PolymerElement); // Register the element using Polymer's constructor.
+});
+})();
+</script>

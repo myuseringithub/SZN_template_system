@@ -1,0 +1,55 @@
+<dom-module id="szn-card-prototype"><template strip-whitespace>
+  <style>
+  paper-material {
+    font-size: 18px;
+    line-height: 40px;
+    text-align: center;
+    text-decoration: none;
+    /*overflow: auto;*/
+    background-color: white;
+    min-width: 200px;
+    min-height: 100px;
+
+    border: solid 1px;
+    border-color: #CFCFCF;
+    border-radius: 2px;
+  }
+  </style>
+
+  <paper-material elevation='0'>
+    <div class="cardContent">
+      <paper-icon-button icon="icons:more-vert"></paper-icon-button>
+      <div>Route Key:</div>
+      <div>Order:</div>
+    </div>
+    <div class="darkSection cardContent">
+      <div>Conditions:</div>
+    </div>
+    <div class="cardContent">
+      <div><iron-icon icon="icons:arrow-forward"></iron-icon> Document:</div>
+    </div>
+  </paper-material>
+
+</template><script>
+(() => { 'use strict';
+const SZN = window.SZN || {};
+class PolymerElement {
+  get behaviors() { // http://www.ericfeminella.com/blog/2016/03/25/polymer-behaviors-in-es6/
+    return this._behaviors || (this._behaviors = []);
+  }
+  set behaviors(value) { this._behaviors = value;}
+  beforeRegister() { // Element setup goes in beforeRegister instead of createdCallback.
+    this.is = 'szn-card-prototype';
+    this.properties = { // Define the properties object in beforeRegister.
+    };
+  }
+  ready() {
+  }
+  attached() {
+  }
+}
+HTMLImports.whenReady(()=>{
+  Polymer(PolymerElement); // Register the element using Polymer's constructor.
+});
+})();
+</script></dom-module>

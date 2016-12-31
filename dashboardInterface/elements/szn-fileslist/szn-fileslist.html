@@ -1,0 +1,158 @@
+<dom-module id="szn-fileslist"><template>
+    <style include="iron-flex iron-flex-alignment">
+      :host {
+        display: block;
+        @apply(--layout);
+        @apply(--layout-flex-auto);
+        @apply(--layout-center-center);
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        padding-top: 15px;
+      }
+      body {
+        font-family: Roboto, sans-serif;
+        color: #333;
+        max-width: 700px;
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      form {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      paper-button {
+        flex-shrink: 1;
+      }
+      paper-input {
+        flex-grow: 1;
+      }
+
+      paper-checkbox {
+        display: inline-block;
+        margin: 5px 0;
+        transition: opacity 0.3s;
+      }
+
+      paper-checkbox[checked] {
+        opacity: 0.5;
+      }
+
+      #content {
+        @apply(--layout);
+        @apply(--layout-flex-auto);
+        @apply(--layout-center-center);
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        padding-top: 15px;
+      }
+
+      .item {
+        -webkit-flex: 1 calc(20% - 20px);
+        flex: 1 calc(20% - 20px);
+        width: calc(20% - 20px);
+        min-width: 200px;
+        flex-grow: 0;
+        height: 250px;
+        min-height: 200px;
+        margin: 10px;
+        text-decoration: none;
+        background-color: white;
+
+        font-size: 18px;
+        text-align: center;
+        line-height: 40px;
+        overflow: auto;
+
+      }
+
+      .item span {
+        white-space: nowrap;
+        display: block;
+      }
+
+      .section-title {
+        font-size: 35px;
+        line-height: 30px;
+        margin: 37px auto 25px auto;
+        font-weight: bold;
+        background-color: #666666;
+        -webkit-background-clip: text;
+        -moz-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: rgba(255,255,255,0.5) 0px 3px 3px;
+        text-align: center;
+        text-transform: uppercase;
+
+      }
+
+      @media (max-width: 639px) {
+        [title] {
+          left: 85px;
+        }
+      }
+
+    </style>
+
+
+    <span
+      class="section-title"
+      style="width: 100%; display: block; font-size: 30px; text-align: center;"
+      on-keypress="_checkConfirmation"
+      >[[filestype]]</span>
+
+    <template is="dom-repeat"
+      items="{{files}}"
+      filter="{{_filterToPreventInputUnfocusOnFirebase()}}"
+      >
+      <szn-filecard file="{{item}}" files="{{files}}" filestype="{{filestype}}"></szn-filecard>
+    </template>
+
+    <szn-addfilecard files="{{files}}" filestype="{{filestype}}" datablueprint="{{datablueprint}}"></szn-addfilecard>
+
+    <firebase-query
+    path="[[_filesurl(filestype)]]"
+    data="{{files}}"
+    ></firebase-query>
+
+</template><script>
+(() => { 'use strict';
+const SZN = window.SZN || {};
+class PolymerElement {
+  get behaviors() { // http://www.ericfeminella.com/blog/2016/03/25/polymer-behaviors-in-es6/
+    return this._behaviors || (this._behaviors = [SZN.behaviors.App]);
+  }
+  set behaviors(value) { this._behaviors = value;}
+  beforeRegister() { // Element setup goes in beforeRegister instead of createdCallback.
+    this.is = 'szn-fileslist';
+    this.properties = { // Define the properties object in beforeRegister.
+      filestype: {
+          type: String,
+          notify: true
+      },
+      files: {
+          type: Array,
+          notify: true,
+          value: function() {
+            return [];
+          }
+      }
+    };
+  }
+  ready() {
+  }
+  attached() {
+  }
+  _filesurl(filestype) {
+    return this.jointPaths([ this.app.firebase.basePath, 'files', filestype ]);
+  }
+}
+HTMLImports.whenReady(()=>{
+  Polymer(PolymerElement); // Register the element using Polymer's constructor.
+});
+})();
+</script></dom-module>

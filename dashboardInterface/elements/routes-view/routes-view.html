@@ -1,0 +1,35 @@
+<link rel="import" href="./routes-view-styles.html">
+<dom-module id="routes-view">
+  <template>
+  <style include="routes-view-styles">
+  </style>
+  <span class="section-title">Routes</span>
+  <div class="unitsContainer">
+    <szn-card-prototype></szn-card-prototype>
+    <template is="dom-repeat"
+      items="{{routes}}"
+      as="route"
+      index-as="index"
+      >
+        <!-- <szn-routecard route="{{item}}" class=""></szn-routecard> -->
+        <szn-card>
+          <div class="cardContent">
+            <paper-icon-button icon="icons:more-vert"></paper-icon-button>
+            <div>Route Key: {{route.$key}}</div>
+            <div>Order: {{route.order}}</div>
+          </div>
+          <div class="darkSection cardContent">
+            <div>Conditions: {{route.conditions}}</div>
+          </div>
+          <div class="cardContent">
+            <div><iron-icon icon="icons:arrow-forward"></iron-icon> Document: {{route.document}}</div>
+          </div>
+        </szn-card>
+    </template>
+  </div>
+
+  <firebase-query
+    path="[[app.firebase.basePath]]/routes"
+    data="{{routes}}"
+  ></firebase-query>
+</template><script src="./routes-view.js"></script></dom-module>

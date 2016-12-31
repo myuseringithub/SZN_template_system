@@ -1,0 +1,46 @@
+<link rel="import" href="./files-view-styles.html">
+<dom-module id="files-view">
+  <template>
+  <style include="files-view-styles"></style>
+
+    <iron-ajax
+    id="ajaxCreateFile"
+    method="POST"
+    url="[[app.locations.wordpressAdminAjaxUrl]]"
+    params='{{params}}'
+    handle-as="json"
+    on-response="_handleResponse"
+    debounce-duration="300"></iron-ajax>
+
+    <iron-ajax
+    id="ajaxCheckTemplateFiles"
+    method="POST"
+    url="[[app.locations.wordpressAdminAjaxUrl]]"
+    params='{"action":"szn_ajaxCheckTemplateFiles"}'
+    handle-as="json"
+    on-response="_handleResponseTemplates"
+    debounce-duration="300"></iron-ajax>
+
+    <firebase-query
+      path="[[app.firebase.basePath]]/files"
+      data="{{filesTypes}}"
+    ></firebase-query>
+    <paper-material id="ajaxCheckTemplateFilez" class="item" key="add">
+      <paper-button raised on-tap="_ajaxCheckTemplateFiles">_ajaxCheckTemplateFiles</paper-button>
+    </paper-material>
+
+
+    <paper-material id="createFile" class="item" key="add">
+      <paper-input id="directory" label="directory" value="{{directory}}" ></paper-input>
+      <paper-input id="filename" label="filename" value="{{filename}}" ></paper-input>
+      <paper-button raised on-tap="_ajaxCreateFile">Create File In Server</paper-button>
+    </paper-material>
+
+    <template is="dom-repeat"
+      items="{{filesTypes}}"
+      index-as="typenumber"
+      >
+        <szn-fileslist filestype="{{item.$key}}" ></szn-fileslist>
+    </template>
+
+</template><script src="./files-view.js"></script></dom-module>

@@ -1,0 +1,25 @@
+<link rel="import" href="./settings-view-styles.html">
+<dom-module id="settings-view"><template>
+  <style include="settings-view-styles">
+  </style>
+
+  <div>Settings</div>
+  <firebase-document
+  path="[[app.firebase.basePath]]/settings/locations"
+  data="{{locations}}"
+  ></firebase-document>
+  <div class="unitsContainer">
+    <template is="dom-repeat"
+      items="{{_toArrayAndRemoveKey(locations)}}"
+      index-as="index"
+      as="location"
+      >
+      <szn-card>
+        <div class="cardContent">
+          {{location}}
+        </div>
+      </szn-card>
+    </template>
+  </div>
+
+</template><script src="./settings-view.js"></script></dom-module>
