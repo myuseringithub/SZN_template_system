@@ -1,0 +1,13 @@
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Shay12tg/firebase-php"
+        }
+    ],
+    "require": {
+        "ktamas77/firebase-php": "dev-master",
+        "firebase/token-generator": "^3.0",
+        "firebase/php-jwt": "^3.0"
+    }
+}
