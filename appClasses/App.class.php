@@ -111,6 +111,8 @@ class App {
           self::$settings['document'] = self::$settings['routes'][$unitKey]['document'];
           break;
         }
+      } else {
+          self::$settings['document'] = self::$settings['routes'][$unitKey]['document'];
       }
     }
     // var_dump(self::$classesObjects['FilesController']->conditionsObjects);
