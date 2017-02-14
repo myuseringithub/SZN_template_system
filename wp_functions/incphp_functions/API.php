@@ -74,7 +74,7 @@ add_action ('plugins_loaded', function (){
 		$custom_post_types = array('mcq');
 		$args = array (
 			'post_type' => $custom_post_types,
-			'posts_per_page' => 2000,
+			'posts_per_page' => 800,
 			'orderby' => 'date'
 		);
 		$mcqQueryObject = new WP_Query($args);
